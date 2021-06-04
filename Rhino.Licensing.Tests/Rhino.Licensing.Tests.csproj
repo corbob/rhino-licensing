@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -8,6 +8,7 @@
     <RootNamespace>Rhino.Licensing.Tests</RootNamespace>
     <AssemblyName>Rhino.Licensing.Tests</AssemblyName>
     <FileAlignment>512</FileAlignment>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,7 +33,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <DefineConstants>DESKTOP;</DefineConstants>
+    <DefineConstants>DESKTOP</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -81,10 +82,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rhino.Licensing\Rhino.Licensing.csproj">
-      <Project>{05EFD7EB-F0FB-4B65-8E4A-C8FF8DDC6A78}</Project>
-      <Name>Rhino.Licensing</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Rhino.Licensing\Rhino.Licensing.csproj" />
   </ItemGroup>
 
   <ItemGroup>

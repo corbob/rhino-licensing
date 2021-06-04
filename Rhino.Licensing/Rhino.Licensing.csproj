@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -7,12 +7,15 @@
     <Description>Licensing Framework for .NET.</Description>
     <Authors>Ayende Rahien + Contributors</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/ayende/rhino-licensing</PackageProjectUrl>
-    <PackageTags>Licencing</PackageTags>
+    <PackageProjectUrl>https://github.com/chocolatey/rhino-licensing</PackageProjectUrl>
+    <Version>1.4.0</Version>
+    <PackageTags>Licensing</PackageTags>
     <PackageId>Rhino.Licensing</PackageId>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ayende-open-source.snk</AssemblyOriginatorKeyFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <DefineConstants>LIBLOG_PROVIDERS_ONLY</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -82,12 +85,6 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.12" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="$(SolutionDir)\Solution Items\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
