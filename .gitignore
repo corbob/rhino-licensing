@@ -10,3 +10,4 @@ _ReSharper.*/
 *.user
 packages
 /.vs
+AssemblyInfo.cs

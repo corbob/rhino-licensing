@@ -3,7 +3,7 @@
 //
 // https://github.com/damianh/LibLog
 //===============================================================================
-// Copyright © 2011-2015 Damian Hickey.  All rights reserved.
+// Copyright ï¿½ 2011-2015 Damian Hickey.  All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@
 // this can have unintended consequences of consumers of your library using your library to resolve a logger. If the
 // reason is because you want to open this functionality to other projects within your solution,
 // consider [InternalsVisibleTo] instead.
-// 
+//
 // Define LIBLOG_PROVIDERS_ONLY if your library provides its own logging API and you just want to use the
 // LibLog providers internally to provide built in support for popular logging frameworks.
 
@@ -95,7 +95,7 @@ namespace Rhino.Licensing.Logging
         /// <remarks>
         /// Note to implementers: the message func should not be called if the loglevel is not enabled
         /// so as not to incur performance penalties.
-        /// 
+        ///
         /// To check IsEnabled call Log with only LogLevel and check the return value, no event will be written.
         /// </remarks>
         bool Log(LogLevel logLevel, Func<string> messageFunc, Exception exception = null, params object[] formatParameters);
@@ -519,10 +519,10 @@ namespace Rhino.Licensing.Logging
         public static bool IsDisabled { get; set; }
 
         /// <summary>
-        /// Sets an action that is invoked when a consumer of your library has called SetCurrentLogProvider. It is 
+        /// Sets an action that is invoked when a consumer of your library has called SetCurrentLogProvider. It is
         /// important that hook into this if you are using child libraries (especially ilmerged ones) that are using
         /// LibLog (or other logging abstraction) so you adapt and delegate to them.
-        /// <see cref="SetCurrentLogProvider"/> 
+        /// <see cref="SetCurrentLogProvider"/>
         /// </summary>
         internal static Action<ILogProvider> OnCurrentLogProviderSet
         {
@@ -673,11 +673,21 @@ namespace Rhino.Licensing.Logging
     static readonly List<Tuple<IsLoggerAvailable, CreateLogProvider>> LogProviderResolvers =
                 new List<Tuple<IsLoggerAvailable, CreateLogProvider>>
             {
-            new Tuple<IsLoggerAvailable, CreateLogProvider>(SerilogLogProvider.IsLoggerAvailable, () => new SerilogLogProvider()),
-            new Tuple<IsLoggerAvailable, CreateLogProvider>(NLogLogProvider.IsLoggerAvailable, () => new NLogLogProvider()),
-            new Tuple<IsLoggerAvailable, CreateLogProvider>(Log4NetLogProvider.IsLoggerAvailable, () => new Log4NetLogProvider()),
-            new Tuple<IsLoggerAvailable, CreateLogProvider>(EntLibLogProvider.IsLoggerAvailable, () => new EntLibLogProvider()),
-            new Tuple<IsLoggerAvailable, CreateLogProvider>(LoupeLogProvider.IsLoggerAvailable, () => new LoupeLogProvider()),
+            new Tuple<IsLoggerAvailable, CreateLogProvider>(
+                SerilogLogProvider.IsLoggerAvailable,
+                () => new SerilogLogProvider()),
+            new Tuple<IsLoggerAvailable, CreateLogProvider>(
+                NLogLogProvider.IsLoggerAvailable,
+                () => new NLogLogProvider()),
+            new Tuple<IsLoggerAvailable, CreateLogProvider>(
+                Log4NetLogProvider.IsLoggerAvailable,
+                () => new Log4NetLogProvider()),
+            //new Tuple<IsLoggerAvailable, CreateLogProvider>(
+            //    EntLibLogProvider.IsLoggerAvailable,
+            //    () => new EntLibLogProvider()),
+            new Tuple<IsLoggerAvailable, CreateLogProvider>(
+                LoupeLogProvider.IsLoggerAvailable,
+                () => new LoupeLogProvider()),
             };
 
 #if !LIBLOG_PROVIDERS_ONLY
@@ -855,7 +865,7 @@ namespace Rhino.Licensing.Logging.LogProviders
     internal class NLogLogProvider : LogProviderBase
     {
         private readonly Func<string, object> _getLoggerByNameDelegate;
-        private static bool s_providerIsAvailableOverride = true;
+        private static bool s_providerIsAvailableOverride = false;
 
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "LogManager")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NLog")]
@@ -1204,7 +1214,7 @@ namespace Rhino.Licensing.Logging.LogProviders
     internal class Log4NetLogProvider : LogProviderBase
     {
         private readonly Func<string, object> _getLoggerByNameDelegate;
-        private static bool s_providerIsAvailableOverride = true;
+        private static bool s_providerIsAvailableOverride = false;
 
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "LogManager")]
         public Log4NetLogProvider()
@@ -1588,7 +1598,7 @@ namespace Rhino.Licensing.Logging.LogProviders
     internal class EntLibLogProvider : LogProviderBase
     {
         private const string TypeTemplate = "Microsoft.Practices.EnterpriseLibrary.Logging.{0}, Microsoft.Practices.EnterpriseLibrary.Logging";
-        private static bool s_providerIsAvailableOverride = true;
+        private static bool s_providerIsAvailableOverride = false;
         private static readonly Type LogEntryType;
         private static readonly Type LoggerType;
         private static readonly Type TraceEventTypeType;
@@ -1768,7 +1778,7 @@ namespace Rhino.Licensing.Logging.LogProviders
     internal class SerilogLogProvider : LogProviderBase
     {
         private readonly Func<string, object> _getLoggerByNameDelegate;
-        private static bool s_providerIsAvailableOverride = true;
+        private static bool s_providerIsAvailableOverride = false;
         private static Func<string, string, IDisposable> _pushProperty;
 
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "Serilog")]
@@ -2037,7 +2047,7 @@ namespace Rhino.Licensing.Logging.LogProviders
             params object[] args
             );
 
-        private static bool s_providerIsAvailableOverride = true;
+        private static bool s_providerIsAvailableOverride = false;
         private readonly WriteDelegate _logWriteDelegate;
 
         public LoupeLogProvider()
@@ -2197,9 +2207,9 @@ namespace Rhino.Licensing.Logging.LogProviders
 
         /// <summary>
         /// Some logging frameworks support structured logging, such as serilog. This will allow you to add names to structured data in a format string:
-        /// For example: Log("Log message to {user}", user). This only works with serilog, but as the user of LibLog, you don't know if serilog is actually 
-        /// used. So, this class simulates that. it will replace any text in {curly braces} with an index number. 
-        /// 
+        /// For example: Log("Log message to {user}", user). This only works with serilog, but as the user of LibLog, you don't know if serilog is actually
+        /// used. So, this class simulates that. it will replace any text in {curly braces} with an index number.
+        ///
         /// "Log {message} to {user}" would turn into => "Log {0} to {1}". Then the format parameters are handled using regular .net string.Format.
         /// </summary>
         /// <param name="messageBuilder">The message builder.</param>
