@@ -34,7 +34,7 @@ namespace Rhino.Licensing.Tests
             LicensingService.LicenseServerPrivateKey = floating_private;
 
             var host = new ServiceHost(typeof(LicensingService));
-            const string address = "http://localhost:19292/license";
+            string address = $"http://localhost:19292/{Guid.NewGuid().ToString()}";
             host.AddServiceEndpoint(typeof(ILicensingService), new BasicHttpBinding(), address);
 
             host.Open();
@@ -60,7 +60,7 @@ namespace Rhino.Licensing.Tests
             LicensingService.LicenseServerPrivateKey = floating_private;
 
             var host = new ServiceHost(typeof(LicensingService));
-            var address = "http://localhost:19292/license";
+            string address = $"http://localhost:19292/{Guid.NewGuid().ToString()}";
             host.AddServiceEndpoint(typeof(ILicensingService), new BasicHttpBinding(), address);
 
             host.Open();
