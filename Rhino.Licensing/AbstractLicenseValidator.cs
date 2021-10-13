@@ -267,9 +267,11 @@ namespace Rhino.Licensing
 
                 if (!result)
                 {
+                    // If we don't disable it here and we throw an exception, if we're not done before the timer fires again we will cause an unhandled LicenseExpiredException.
+                    DisableFutureChecks();
+
                     if (LicenseExpired == null) throw new LicenseExpiredException("Expiration Date : " + ExpirationDate);
 
-                    DisableFutureChecks();
                     LicenseExpired(ExpirationDate);
                 }
 
@@ -659,6 +661,7 @@ namespace Rhino.Licensing
         public void DisableFutureChecks()
         {
             disableFutureChecks = true;
+            nextLeaseTimer.Change(Timeout.Infinite, Timeout.Infinite);
             nextLeaseTimer.Dispose();
         }
 
