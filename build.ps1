@@ -2,7 +2,7 @@
 param(
     [Parameter()]
     [ValidateSet('Debug', 'Release')]
-    [string]$Configuration = 'Debug',
+    [string]$Configuration = 'Release',
 
     [Parameter()]
     [string]$Path = "$PSScriptRoot/build",

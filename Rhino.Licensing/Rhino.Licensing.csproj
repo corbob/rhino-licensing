@@ -87,15 +87,21 @@
     <PackageReference Include="log4net" Version="2.0.12" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\ayende-open-source.snk">
       <Link>ayende-open-source.snk</Link>
     </None>
     <None Include="Rhino.Licensing.nuspec" />
+    <None Include="..\license.txt" Pack="true" PackagePath="license.txt" />
+    <None Include="..\acknowledgements.txt" Pack="true" PackagePath="acknowledgements.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibLog" Version="4.2.6" />
+    <PackageReference Include="LibLog" Version="4.2.6" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
