@@ -86,13 +86,38 @@ namespace Rhino.Licensing
         /// <param name="attributes">extra information stored as key/valye in the license file</param>
         /// <returns></returns>
         public string Generate(string name, Guid id, DateTime expirationDate, IDictionary<string, string> attributes, LicenseType licenseType)
+            => Generate(name, id, expirationDate, attributes, licenseType, SigningAlgorithm.SHA1);
+
+        /// <summary>
+        /// Generates a new license with no attributes using a specified signing <paramref name="algorithm"/>
+        /// </summary>
+        /// <param name="name">The name of the license holder</param>
+        /// <param name="id">Id of the license holder</param>
+        /// <param name="expirationDate">License expiry date</param>
+        /// <param name="licenseType">Type of the license</param>
+        /// <param name="algorithm">Signing algorithm to use for signing the XML</param>
+        /// <returns>The generated license string</returns>
+        public string Generate(string name, Guid id, DateTime expirationDate, LicenseType licenseType, SigningAlgorithm algorithm)
+            => Generate(name, id, expirationDate, new Dictionary<string, string>(), licenseType, algorithm);
+
+        /// <summary>
+        /// Generates a new license using a specified signing <paramref name="algorithm"/>
+        /// </summary>
+        /// <param name="name">The name of the license holder</param>
+        /// <param name="id">Id of the license holder</param>
+        /// <param name="expirationDate">License expiry date</param>
+        /// <param name="attributes">Extra information stored as key/value in the license file</param>
+        /// <param name="licenseType">Type of the license</param>
+        /// <param name="algorithm">Signing algorithm to use for signing the XML</param>
+        /// <returns>The generated license string</returns>
+        public string Generate(string name, Guid id, DateTime expirationDate, IDictionary<string, string> attributes, LicenseType licenseType, SigningAlgorithm algorithm)
         {
             using (var rsa = new RSACryptoServiceProvider())
             {
                 RSAKeyExtensions.FromXmlString(rsa,privateKey);
                 var doc = CreateDocument(id, name, expirationDate, attributes, licenseType);
 
-                var signature = GetXmlDigitalSignature(doc, rsa);
+                var signature = GetXmlDigitalSignature(doc, rsa, algorithm);
                 doc.FirstChild.AppendChild(doc.ImportNode(signature, true));
 
                 var ms = new MemoryStream();
@@ -107,10 +132,38 @@ namespace Rhino.Licensing
             }
         }
 
-        private static XmlElement GetXmlDigitalSignature(XmlDocument x, AsymmetricAlgorithm key)
+        private static string GetDigestSigningMethod(SigningAlgorithm algorithm)
+            => algorithm switch
+            {
+                SigningAlgorithm.SHA1 => SignedXml.XmlDsigSHA1Url,
+#if !NET40
+                SigningAlgorithm.SHA256 => SignedXml.XmlDsigSHA256Url,
+                SigningAlgorithm.SHA384 => SignedXml.XmlDsigSHA384Url,
+                SigningAlgorithm.SHA512 => SignedXml.XmlDsigSHA512Url,
+#endif
+                _ => throw new ArgumentException(nameof(algorithm))
+            };
+
+        private static string GetRsaSigningMethod(SigningAlgorithm algorithm)
+            => algorithm switch
+            {
+                SigningAlgorithm.SHA1 => SignedXml.XmlDsigRSASHA1Url,
+#if !NET40
+                SigningAlgorithm.SHA256 => SignedXml.XmlDsigRSASHA256Url,
+                SigningAlgorithm.SHA384 => SignedXml.XmlDsigRSASHA384Url,
+                SigningAlgorithm.SHA512 => SignedXml.XmlDsigRSASHA512Url,
+#endif
+                _ => throw new ArgumentException(nameof(algorithm))
+            };
+
+        private static XmlElement GetXmlDigitalSignature(XmlDocument x, AsymmetricAlgorithm key, SigningAlgorithm algorithm = SigningAlgorithm.SHA1)
         {
             var signedXml = new SignedXml(x) { SigningKey = key };
             var reference = new Reference { Uri = "" };
+
+            reference.DigestMethod = GetDigestSigningMethod(algorithm);
+            signedXml.SignedInfo.SignatureMethod = GetRsaSigningMethod(algorithm);
+
             reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
             signedXml.AddReference(reference);
             signedXml.ComputeSignature();
