@@ -43,7 +43,7 @@ namespace Rhino.Licensing
                 var publicKeyEl = doc.CreateElement("license-server-public-key");
                 license.AppendChild(publicKeyEl);
                 publicKeyEl.InnerText = publicKey;
-                
+
                 var nameEl = doc.CreateElement("name");
                 license.AppendChild(nameEl);
                 nameEl.InnerText = name;
@@ -114,14 +114,14 @@ namespace Rhino.Licensing
         {
             using (var rsa = new RSACryptoServiceProvider())
             {
-                RSAKeyExtensions.FromXmlString(rsa,privateKey);
+                RSAKeyExtensions.FromXmlString(rsa, privateKey);
                 var doc = CreateDocument(id, name, expirationDate, attributes, licenseType);
 
                 var signature = GetXmlDigitalSignature(doc, rsa, algorithm);
                 doc.FirstChild.AppendChild(doc.ImportNode(signature, true));
 
                 var ms = new MemoryStream();
-                var writer = XmlWriter.Create(ms,new XmlWriterSettings
+                var writer = XmlWriter.Create(ms, new XmlWriterSettings
                 {
                     Indent = true,
                     Encoding = Encoding.UTF8
@@ -178,7 +178,7 @@ namespace Rhino.Licensing
             var idAttr = doc.CreateAttribute("id");
             license.Attributes.Append(idAttr);
             idAttr.Value = id.ToString();
-        
+
             var expirDateAttr = doc.CreateAttribute("expiration");
             license.Attributes.Append(expirDateAttr);
             expirDateAttr.Value = expirationDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffff", CultureInfo.InvariantCulture);
@@ -186,7 +186,7 @@ namespace Rhino.Licensing
             var licenseAttr = doc.CreateAttribute("type");
             license.Attributes.Append(licenseAttr);
             licenseAttr.Value = licenseType.ToString();
-            
+
             var nameEl = doc.CreateElement("name");
             license.AppendChild(nameEl);
             nameEl.InnerText = name;
