@@ -17,9 +17,9 @@ namespace Rhino.Licensing
         private readonly string privateKey;
 
         /// <summary>
-        /// Creates a new instance of <seealso cref="LicenseGenerator"/>. 
+        /// Creates a new instance of <see cref="LicenseGenerator"/>.
         /// </summary>
-        /// <param name="privateKey">private key of the product</param>
+        /// <param name="privateKey">The private key of the product</param>
         public LicenseGenerator(string privateKey)
         {
             this.privateKey = privateKey;
@@ -29,8 +29,8 @@ namespace Rhino.Licensing
         /// Generates a new floating license.
         /// </summary>
         /// <param name="name">Name of the license holder</param>
-        /// <param name="publicKey">public key of the license server</param>
-        /// <returns>license content</returns>
+        /// <param name="publicKey">The public key of the license server</param>
+        /// <returns>The generated license XML string</returns>
         public string GenerateFloatingLicense(string name, string publicKey)
         {
             using (var rsa = new RSACryptoServiceProvider())
@@ -64,27 +64,27 @@ namespace Rhino.Licensing
         }
 
         /// <summary>
-        /// Generates a new license
+        /// Generates a new license with no attributes using SHA1 as the signing algorithm.
         /// </summary>
-        /// <param name="name">name of the license holder</param>
+        /// <param name="name">Name of the license holder</param>
         /// <param name="id">Id of the license holder</param>
-        /// <param name="expirationDate">expiry date</param>
-        /// <param name="licenseType">type of the license</param>
-        /// <returns></returns>
+        /// <param name="expirationDate">License expiry date</param>
+        /// <param name="licenseType">Type of the license</param>
+        /// <returns>The generated license XML string</returns>
         public string Generate(string name, Guid id, DateTime expirationDate, LicenseType licenseType)
         {
             return Generate(name, id, expirationDate, new Dictionary<string, string>(), licenseType);
         }
 
         /// <summary>
-        /// Generates a new license
+        /// Generates a new license using SHA1 as the signing algorithm.
         /// </summary>
-        /// <param name="name">name of the license holder</param>
+        /// <param name="name">Name of the license holder</param>
         /// <param name="id">Id of the license holder</param>
-        /// <param name="expirationDate">expiry date</param>
-        /// <param name="licenseType">type of the license</param>
-        /// <param name="attributes">extra information stored as key/valye in the license file</param>
-        /// <returns></returns>
+        /// <param name="expirationDate">License expiry date</param>
+        /// <param name="licenseType">Type of the license</param>
+        /// <param name="attributes">Extra information stored as key/value in the license file</param>
+        /// <returns>The generated license XML string</returns>
         public string Generate(string name, Guid id, DateTime expirationDate, IDictionary<string, string> attributes, LicenseType licenseType)
             => Generate(name, id, expirationDate, attributes, licenseType, SigningAlgorithm.SHA1);
 
@@ -96,7 +96,7 @@ namespace Rhino.Licensing
         /// <param name="expirationDate">License expiry date</param>
         /// <param name="licenseType">Type of the license</param>
         /// <param name="algorithm">Signing algorithm to use for signing the XML</param>
-        /// <returns>The generated license string</returns>
+        /// <returns>The generated license XML string</returns>
         public string Generate(string name, Guid id, DateTime expirationDate, LicenseType licenseType, SigningAlgorithm algorithm)
             => Generate(name, id, expirationDate, new Dictionary<string, string>(), licenseType, algorithm);
 
