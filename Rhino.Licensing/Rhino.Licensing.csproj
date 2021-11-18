@@ -16,6 +16,11 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DefineConstants>LIBLOG_PROVIDERS_ONLY</DefineConstants>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" $(TargetFramework) == 'net40' ">
+    <DefineConstants>NET40</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
