@@ -8,7 +8,7 @@
     <Authors>Ayende Rahien + Contributors</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/chocolatey/rhino-licensing</PackageProjectUrl>
-    <Version>1.4.1</Version>
+    <Version>1.5.0</Version>
     <PackageTags>Licensing</PackageTags>
     <PackageId>Rhino.Licensing</PackageId>
     <SignAssembly>true</SignAssembly>
