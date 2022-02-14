@@ -16,7 +16,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DefineConstants>LIBLOG_PROVIDERS_ONLY</DefineConstants>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" $(TargetFramework) == 'net40' ">
@@ -51,6 +51,10 @@
         <PropertyGroup>
             <DefineConstants>DESKTOP;</DefineConstants>
         </PropertyGroup>
+
+        <ItemGroup Condition="$(TargetFramework) == 'net40'">
+          <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net40" Version="1.0.2" PrivateAssets="All" />
+        </ItemGroup>
 
         <ItemGroup>
             <Reference Include="System" />
