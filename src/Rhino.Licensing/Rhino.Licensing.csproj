@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net48;net40</TargetFrameworks>
+    <!--Nuspec Metadata-->
+    <Description>Licensing Framework for .NET.</Description>
+    <Authors>Ayende Rahien + Contributors</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/chocolatey/rhino-licensing</PackageProjectUrl>
+    <Version>1.5.0</Version>
+    <PackageTags>Licensing</PackageTags>
+    <PackageId>Rhino.Licensing</PackageId>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\ayende-open-source.snk</AssemblyOriginatorKeyFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <DefineConstants>LIBLOG_PROVIDERS_ONLY</DefineConstants>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" $(TargetFramework) == 'net40' ">
+    <DefineConstants>NET40</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1607</NoWarn>
+    <DocumentationFile>bin\Debug\Rhino.Licensing.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="$(TargetFramework.StartsWith('net4'))">
+        <PropertyGroup>
+            <DefineConstants>DESKTOP;</DefineConstants>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <Reference Include="System" />
+            <Reference Include="System.Core" />
+            <Reference Include="System.Security" />
+            <Reference Include="System.ServiceModel" />
+            <Reference Include="System.Xml.Linq" />
+            <Reference Include="System.Data.DataSetExtensions" />
+            <Reference Include="System.Data" />
+            <Reference Include="System.Xml" />
+        </ItemGroup>
+    </When>
+
+    <When Condition="!$(TargetFramework.StartsWith('net4'))">
+        <ItemGroup>
+            <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
+            <PackageReference Include="System.ServiceModel.Http" Version="4.8.0" />
+            <PackageReference Include="System.ServiceModel.Primitives" Version="4.8.0" />
+            <PackageReference Include="System.Private.ServiceModel" Version="4.8.0" />
+        </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PropertyGroup>
+            <DefineConstants>LIBLOG_PORTABLE;</DefineConstants>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <PackageReference Include="Microsoft.CSharp">
+            <Version>4.4.0</Version>
+            </PackageReference>
+        </ItemGroup>
+    </When>
+  </Choose>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.12" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\ayende-open-source.snk">
+      <Link>ayende-open-source.snk</Link>
+    </None>
+    <None Include="..\..\nuspec\nuget\Rhino.Licensing.nuspec" />
+    <None Include="..\..\license.txt" Pack="true" PackagePath="license.txt" />
+    <None Include="..\..\acknowledgements.txt" Pack="true" PackagePath="acknowledgements.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibLog" Version="4.2.6" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

@@ -1,3 +1,0 @@
- * Run .\psake.ps1
- * Release Folder
- * The file will already be strong-named. You are able to take and just use that.
