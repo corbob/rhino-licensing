@@ -23,7 +23,7 @@ namespace Rhino.Licensing.Tests
 
 #if DESKTOP
 
-        [Fact]
+        [SkipOnTeamCityFact]
         public void Can_validate_floating_license()
         {
             string fileName = WriteFloatingLicenseFile();
@@ -34,7 +34,7 @@ namespace Rhino.Licensing.Tests
             LicensingService.LicenseServerPrivateKey = floating_private;
 
             var host = new ServiceHost(typeof(LicensingService));
-            string address = $"http://localhost:19292/{Guid.NewGuid().ToString()}";
+            string address = "http://localhost:19292/" + Guid.NewGuid();
             host.AddServiceEndpoint(typeof(ILicensingService), new BasicHttpBinding(), address);
 
             host.Open();
@@ -49,7 +49,7 @@ namespace Rhino.Licensing.Tests
             }
         }
 
-        [Fact]
+        [SkipOnTeamCityFact]
         public void Can_only_get_license_per_allocated_licenses()
         {
             string fileName = WriteFloatingLicenseFile();
@@ -60,7 +60,7 @@ namespace Rhino.Licensing.Tests
             LicensingService.LicenseServerPrivateKey = floating_private;
 
             var host = new ServiceHost(typeof(LicensingService));
-            string address = $"http://localhost:19292/{Guid.NewGuid().ToString()}";
+            string address = "http://localhost:19292/" + Guid.NewGuid();
             host.AddServiceEndpoint(typeof(ILicensingService), new BasicHttpBinding(), address);
 
             host.Open();
@@ -95,7 +95,13 @@ namespace Rhino.Licensing.Tests
         {
             var generator = new LicenseGenerator(public_and_private);
             var license = generator.GenerateFloatingLicense("ayende", floating_public);
-            var fileName = Path.GetTempFileName();
+            var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp");
+            if (Directory.Exists(dir) == false)
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            var fileName = Path.Combine(dir, Guid.NewGuid().ToString());
             File.WriteAllText(fileName, license);
             return fileName;
         }
