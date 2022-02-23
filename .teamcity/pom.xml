@@ -22,7 +22,7 @@
     </repository>
     <repository>
       <id>teamcity-server</id>
-      <url>https://sra-soteria-dev-web.ch0.co:443/app/dsl-plugins-repository</url>
+      <url>https://teamcityserver/app/dsl-plugins-repository</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>

@@ -14,11 +14,9 @@
 
 Environment.SetVariableNames();
 var packageSources = new List<PackageSourceData>();
-var nugetDevUrl = EnvironmentVariable("NUGET_DEV_SOURCE");
-var nugetProdUrl = EnvironmentVariable("NUGET_PROD_SOURCE");
+var nugetDevUrl = EnvironmentVariable("NUGETDEV_SOURCE");
 
 packageSources.Add(new PackageSourceData(Context, "NugetDev", nugetDevUrl, FeedType.NuGet, isRelease: false));
-packageSources.Add(new PackageSourceData(Context, "NugetProd", nugetProdUrl, FeedType.NuGet, isRelease: true));
 
 Func<FilePathCollection> getProjectsToPack = ()=> GetFiles(BuildParameters.SourceDirectoryPath + "/**/*.csproj")
         - GetFiles(BuildParameters.RootDirectoryPath + "/tools/**/*.csproj")

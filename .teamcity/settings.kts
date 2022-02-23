@@ -6,8 +6,6 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 version = "2021.2"
 
 project {
-    vcsRoot(RhinoLicensingVcs)
-
     buildType(RhinoLicensingBuild)
 }
 
@@ -18,14 +16,12 @@ object RhinoLicensingBuild : BuildType({
 
     params {
         param("teamcity.git.fetchAllHeads", "true")
-        param("env.Git_Branch", "${RhinoLicensingVcs.paramRefs.buildVcsBranch}")
+        param("env.Git_Branch", "%teamcity.build.vcs.branch.RhinoLicensingAnsible_RhinoAnsibleVcsRoot%")
         param("env.vcsroot.branch", "%vcsroot.branch%")
-        text("env.NUGET_DEV_SOURCE", "https://hermes.chocolatey.org:8443/repository/choco-internal-testing/", readOnly = true, allowEmpty = true)
-        text("env.NUGET_PROD_SOURCE", "https://hermes.chocolatey.org:8443/repository/choco-internal-testing/", readOnly = true, allowEmpty = true)
     }
 
     vcs {
-        root(RhinoLicensingVcs)
+        root(DslContext.settingsRoot)
     }
 
     steps {
@@ -64,16 +60,4 @@ object RhinoLicensingBuild : BuildType({
         vcs {
         }
     }
-})
-
-object RhinoLicensingVcs : GitVcsRoot({
-    name = "Rhino.Licensing VCS"
-    url = "git@github.com:chocolatey/rhino-licensing.git"
-    branch = "refs/heads/master"
-    branchSpec = "refs/heads/*"
-    authMethod = uploadedKey {
-        userName = "git"
-        uploadedKey = "GitHub"
-    }
-    param("secure:password", "")
 })
