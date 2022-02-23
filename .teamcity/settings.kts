@@ -16,7 +16,7 @@ object RhinoLicensingBuild : BuildType({
 
     params {
         param("teamcity.git.fetchAllHeads", "true")
-        param("env.Git_Branch", "%teamcity.build.vcs.branch.RhinoLicensingAnsible_RhinoAnsibleVcsRoot%")
+        param("env.Git_Branch", "%teamcity.build.vcs.branch.RhinoLicensing_RhinoLicensingVcsRoot%")
         param("env.vcsroot.branch", "%vcsroot.branch%")
     }
 
