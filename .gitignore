@@ -11,3 +11,7 @@ _ReSharper.*/
 packages
 /.vs
 AssemblyInfo.cs
+SolutionVersion.cs
+Tools/*
+!Tools/packages.config
+code_drop/
