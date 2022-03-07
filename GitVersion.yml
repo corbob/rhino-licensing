@@ -1,0 +1,13 @@
+assembly-versioning-scheme: MajorMinorPatch
+branches:
+  main:
+    increment: Minor
+    regex: '^(master|main)$'
+    tag: beta
+    source-branches: []
+continuous-delivery-fallback-tag: alpha
+increment: Minor
+mode: ContinuousDeployment
+ignore:
+  sha: []
+merge-message-formats: {}
