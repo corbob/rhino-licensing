@@ -1,4 +1,4 @@
-#load nuget:https://hermes.chocolatey.org:8443/repository/choco-internal-testing/?package=cake-chocolatey-recipe&prerelease&version=0.1.0-unstable0082
+#load nuget:?package=Chocolatey.Cake.Recipe&version=0.2.1
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -11,12 +11,7 @@
 // RECIPE SETUP
 ///////////////////////////////////////////////////////////////////////////////
 
-
 Environment.SetVariableNames();
-var packageSources = new List<PackageSourceData>();
-var nugetDevUrl = EnvironmentVariable("NUGETDEV_SOURCE");
-
-packageSources.Add(new PackageSourceData(Context, "NugetDev", nugetDevUrl, FeedType.NuGet, isRelease: false));
 
 Func<FilePathCollection> getProjectsToPack = ()=> GetFiles(BuildParameters.SourceDirectoryPath + "/**/*.csproj")
         - GetFiles(BuildParameters.RootDirectoryPath + "/tools/**/*.csproj")
@@ -42,9 +37,7 @@ BuildParameters.SetParameters(
     shouldRunInspectCode: false,
     treatWarningsAsErrors: false,
     testDirectoryPath: "./test",
-    packageSourceDatas: packageSources,
     shouldRunDotNetCorePack: true,
-    shouldRunDupFinder: false,
     getProjectsToPack: getProjectsToPack);
 
 BuildParameters.PrintParameters(Context);
