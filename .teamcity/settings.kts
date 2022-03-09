@@ -12,7 +12,10 @@ project {
 object RhinoLicensingBuild : BuildType({
     name = "Rhino.Licensing Build"
 
-    artifactRules = "code_drop/TestResults/issues-report.html"
+    artifactRules = """
+        code_drop/TestResults/issues-report.html
+        code_drop/Packages/**/*.nupkg
+    """.trimIndent()
 
     params {
         param("teamcity.git.fetchAllHeads", "true")
@@ -48,7 +51,7 @@ object RhinoLicensingBuild : BuildType({
                         [System.Environment]::GetEnvironmentVariable('PATH', 'Machine')
                     ) -join ';'
 
-                    & ./build.ps1 -Verbosity Diagnostic
+                    & ./build.ps1 -Verbosity Diagnostic -Target CI
                 """.trimIndent()
             }
             noProfile = false
