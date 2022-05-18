@@ -13,7 +13,6 @@
     <PackageId>Rhino.Licensing</PackageId>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ayende-open-source.snk</AssemblyOriginatorKeyFile>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DefineConstants>LIBLOG_PROVIDERS_ONLY</DefineConstants>
     <LangVersion>8.0</LangVersion>
