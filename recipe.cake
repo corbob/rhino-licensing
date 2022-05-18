@@ -1,4 +1,4 @@
-#load nuget:?package=Chocolatey.Cake.Recipe&version=0.4.2
+#load nuget:?package=Chocolatey.Cake.Recipe&version=0.13.3
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ BuildParameters.SetParameters(
     shouldRunInspectCode: false,
     treatWarningsAsErrors: false,
     testDirectoryPath: "./test",
-    shouldRunDotNetCorePack: true,
+    shouldRunDotNetPack: true,
     getProjectsToPack: getProjectsToPack);
 
 BuildParameters.PrintParameters(Context);
@@ -54,4 +54,4 @@ ToolSettings.SetToolSettings(context: Context);
 // RUN IT!
 ///////////////////////////////////////////////////////////////////////////////
 
-Build.RunDotNetCore();
+Build.RunDotNet();
