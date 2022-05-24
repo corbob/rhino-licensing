@@ -16,19 +16,9 @@ namespace Rhino.Licensing
         Trial,
 
         /// <summary>
-        /// Standard license
-        /// </summary>
-        Standard,
-
-        /// <summary>
-        /// For personal use
-        /// </summary>
-        Personal,
-
-        /// <summary>
         /// Professional license (subscription)
         /// </summary>
-        Professional,
+        Professional = 4,
 
         /// <summary>
         /// Architect license (subscription)
@@ -54,15 +44,5 @@ namespace Rhino.Licensing
         /// Enterprise license (subscription)
         /// </summary>
         Enterprise,
-
-        /// <summary>
-        /// Floating license
-        /// </summary>
-        Floating,
-
-        /// <summary>
-        /// Subscription based license
-        /// </summary>
-        Subscription,
     }
 }

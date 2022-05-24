@@ -26,44 +26,6 @@ namespace Rhino.Licensing
         }
 
         /// <summary>
-        /// Generates a new floating license.
-        /// </summary>
-        /// <param name="name">Name of the license holder</param>
-        /// <param name="publicKey">The public key of the license server</param>
-        /// <returns>The generated license XML string</returns>
-        public string GenerateFloatingLicense(string name, string publicKey)
-        {
-            using (var rsa = new RSACryptoServiceProvider())
-            {
-                RSAKeyExtensions.FromXmlString(rsa,privateKey);
-                var doc = new XmlDocument();
-                var license = doc.CreateElement("floating-license");
-                doc.AppendChild(license);
-
-                var publicKeyEl = doc.CreateElement("license-server-public-key");
-                license.AppendChild(publicKeyEl);
-                publicKeyEl.InnerText = publicKey;
-
-                var nameEl = doc.CreateElement("name");
-                license.AppendChild(nameEl);
-                nameEl.InnerText = name;
-
-                var signature = GetXmlDigitalSignature(doc, rsa);
-                doc.FirstChild.AppendChild(doc.ImportNode(signature, true));
-
-                var ms = new MemoryStream();
-                var writer = XmlWriter.Create(ms, new XmlWriterSettings
-                {
-                    Indent = true,
-                    Encoding = Encoding.UTF8
-                });
-                doc.Save(writer);
-                ms.Position = 0;
-                return new StreamReader(ms).ReadToEnd();
-            }
-        }
-
-        /// <summary>
         /// Generates a new license with no attributes using SHA1 as the signing algorithm.
         /// </summary>
         /// <param name="name">Name of the license holder</param>
