@@ -78,12 +78,12 @@
   </ItemGroup>-->
 
   <ItemGroup>
-    <EmbeddedResource Include="public_and_private.xml" />
-    <EmbeddedResource Include="public_only.xml" />
+    <ProjectReference Include="..\..\src\Rhino.Licensing\Rhino.Licensing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Rhino.Licensing\Rhino.Licensing.csproj" />
+    <EmbeddedResource Include="LicenseFiles\*.xml" />
+    <EmbeddedResource Include="SigningKeys\*.xml" />
   </ItemGroup>
 
   <!--<ItemGroup>

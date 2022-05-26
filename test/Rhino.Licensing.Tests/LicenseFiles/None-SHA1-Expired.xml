@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<license id="0c6b2abc-5ba1-4f1c-af11-8c3a01147124" expiration="2013-12-12T14:47:34.0000000" type="None">
+  <name>Oren Eini</name>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>Gvx8slBLYFIhjknzDmuZeUTLLww=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>cQZV2RvrjKRjGpRHmGnztaH++gTx/05Q0+6M+X7i1urRh8QGj+J+rUSafo3DRJuZ5sJNqIV6Hh9DZSBrECx87/mpduF0GvdigkKAWRrmgNEa6r+dv3sCDrIinFVglngxz2Xs6hARcZy7SWKQxRRyGQ7CChFpqMOjRucU40+26wPafa3a+7x2t2p6HabTSjLKtXb+JeBnsJIosAq9R+VgBqk5UuvujV3hzLQsKVj4Wb35T7Yi0kn5EDcSbIup/C+woLYp647zDfHfYe+nrL1mVNwUqE/U/5pvBcPs617HeG0HBgIp/FhXqtRcJVEskfwx7miLqsxv7gFcJQKBNVJPIg==</SignatureValue>
+  </Signature>
+</license>
