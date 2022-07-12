@@ -15,6 +15,7 @@ namespace Rhino.Licensing
         /// </summary>
         Trial,
 
+        // Removed Standard and Personal. Professional needs to continue on with index of 4.
         /// <summary>
         /// Professional license (subscription)
         /// </summary>
