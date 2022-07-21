@@ -1,0 +1,19 @@
+issue-labels-include:
+- Breaking change
+- Feature
+- C4B Feature
+- Bug
+- Improvement
+- Documentation
+issue-labels-exclude:
+- Internal Refactoring
+- Build
+- NO RELEASE NOTES
+issue-labels-alias:
+    - name:    Documentation
+      header:  Documentation
+      plural:  Documentation
+create:
+    include-sha-section: true
+    sha-section-heading: "SHA256 Hashes of the release artifacts"
+    sha-section-line-format: "- `{1}\t{0}`"
