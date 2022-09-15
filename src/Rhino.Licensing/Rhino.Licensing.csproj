@@ -103,7 +103,6 @@
     <None Include="..\..\ayende-open-source.snk">
       <Link>ayende-open-source.snk</Link>
     </None>
-    <None Include="..\..\nuspec\nuget\Rhino.Licensing.nuspec" />
     <None Include="..\..\license.txt" Pack="true" PackagePath="license.txt" />
     <None Include="..\..\acknowledgements.txt" Pack="true" PackagePath="acknowledgements.txt" />
   </ItemGroup>
