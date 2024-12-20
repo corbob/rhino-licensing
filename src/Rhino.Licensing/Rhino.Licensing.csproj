@@ -69,7 +69,7 @@
 
     <When Condition="!$(TargetFramework.StartsWith('net4'))">
         <ItemGroup>
-            <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
+            <PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.1" />
             <PackageReference Include="System.ServiceModel.Http" Version="4.8.0" />
             <PackageReference Include="System.ServiceModel.Primitives" Version="4.8.0" />
             <PackageReference Include="System.Private.ServiceModel" Version="4.8.0" />
