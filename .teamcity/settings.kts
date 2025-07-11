@@ -1,37 +1,46 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetPublish
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.ScheduleTrigger
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.schedule
 import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 
-version = "2022.04"
-
 project {
-    buildType(RhinoLicensingBuild)
+    buildType(RhinoLicensing)
+    buildType(RhinoLicensingSchd)
+    buildType(RhinoLicensingQA)
 }
 
-object RhinoLicensingBuild : BuildType({
-    name = "Rhino.Licensing Build"
+object RhinoLicensing : BuildType({
+    id("RhinoLicensing")
+    name = "Build (Unit Tests)"
+
+    templates(AbsoluteId("SlackNotificationTemplate"))
 
     artifactRules = """
-        code_drop/TestResults/issues-report.html
-        code_drop/Packages/**/*.nupkg
     """.trimIndent()
 
     params {
-        param("teamcity.git.fetchAllHeads", "true")
-        param("env.Git_Branch", "%teamcity.build.vcs.branch.RhinoLicensing_RhinoLicensingVcsRoot%")
         param("env.vcsroot.branch", "%vcsroot.branch%")
+        param("env.Git_Branch", "%teamcity.build.vcs.branch.RhinoLicensing_RhinoLicensingVcsRoot%")
+        param("teamcity.git.fetchAllHeads", "true")
+        password("env.GITHUB_PAT", "%system.GitHubPAT%", display = ParameterDisplay.HIDDEN, readOnly = true)
     }
 
     vcs {
         root(DslContext.settingsRoot)
+
+        branchFilter = """
+            +:*
+        """.trimIndent()
     }
 
     steps {
         powerShell {
             name = "Install dependencies"
-            formatStderrAsError = true
             scriptMode = script {
                 content = """
                     choco install netfx-4.8-devpack dotnetcore-sdk --confirm --no-progress
@@ -43,25 +52,22 @@ object RhinoLicensingBuild : BuildType({
                 """.trimIndent()
             }
         }
-        powerShell {
-            name = "Build & Test"
-            scriptMode = script {
-                content = """
-                    ${'$'}env:PATH = @(
-                    	[System.Environment]::GetEnvironmentVariable('PATH', 'User')
-                        [System.Environment]::GetEnvironmentVariable('PATH', 'Machine')
-                    ) -join ';'
 
-                    & ./build.ps1 -Verbosity Diagnostic -Target CI
-                """.trimIndent()
-            }
-            noProfile = false
-            param("jetbrains_powershell_script_file", "build.ps1")
+        script {
+            name = "Call Cake"
+            scriptContent = """
+                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=unit --shouldRunOpenCover=false
+            """.trimIndent()
         }
     }
 
     triggers {
         vcs {
+            branchFilter = """
+                +:*
+                -:master
+                -:support/*
+            """.trimIndent()
         }
     }
 
@@ -72,6 +78,124 @@ object RhinoLicensingBuild : BuildType({
                     token = "%system.GitHubPAT%"
                 }
             }
+        }
+    }
+})
+
+object RhinoLicensingSchd : BuildType({
+    id = AbsoluteId("RhinoLicensingSchd")
+    name = "Build (Scheduled Integration Testing)"
+
+    templates(AbsoluteId("SlackNotificationTemplate"))
+
+    artifactRules = """
+    """.trimIndent()
+
+    params {
+        param("env.vcsroot.branch", "%vcsroot.branch%")
+        param("env.Git_Branch", "%teamcity.build.vcs.branch.RhinoLicensing_RhinoLicensingVcsRoot%")
+        param("teamcity.git.fetchAllHeads", "true")
+        password("env.GITHUB_PAT", "%system.GitHubPAT%", display = ParameterDisplay.HIDDEN, readOnly = true)
+    }
+
+    vcs {
+        root(DslContext.settingsRoot)
+
+        branchFilter = """
+            +:*
+        """.trimIndent()
+    }
+
+    steps {
+        powerShell {
+            name = "Prerequisites"
+            scriptMode = script {
+                content = """
+                    choco install windows-sdk-7.1 netfx-4.8-devpack visualstudio2022-workload-manageddesktopbuildtools --confirm --no-progress
+                    exit ${'$'}LastExitCode
+                """.trimIndent()
+            }
+        }
+
+        script {
+            name = "Call Cake"
+            scriptContent = """
+                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=all --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
+            """.trimIndent()
+        }
+    }
+
+    triggers {
+        schedule {
+            schedulingPolicy = daily {
+                hour = 2
+                minute = 0
+            }
+            branchFilter = """
+                +:<default>
+            """.trimIndent()
+            triggerBuild = always()
+            withPendingChangesOnly = false
+        }
+    }
+})
+
+object RhinoLicensingQA : BuildType({
+    id = AbsoluteId("RhinoLicensingQA")
+    name = "Build (SonarQube)"
+
+    templates(AbsoluteId("SlackNotificationTemplate"))
+
+    artifactRules = """
+    """.trimIndent()
+
+    params {
+        param("env.vcsroot.branch", "%vcsroot.branch%")
+        param("env.Git_Branch", "%teamcity.build.vcs.branch.RhinoLicensing_RhinoLicensingVcsRoot%")
+        param("env.SONARQUBE_ID", "rhino-licensing")
+        param("teamcity.git.fetchAllHeads", "true")
+        password("env.GITHUB_PAT", "%system.GitHubPAT%", display = ParameterDisplay.HIDDEN, readOnly = true)
+    }
+
+    vcs {
+        root(DslContext.settingsRoot)
+
+        branchFilter = """
+            +:*
+        """.trimIndent()
+    }
+
+    steps {
+        powerShell {
+            name = "Prerequisites"
+            scriptMode = script {
+                content = """
+                    choco install windows-sdk-7.1 netfx-4.8-devpack visualstudio2022-workload-manageddesktopbuildtools --confirm --no-progress
+                    exit ${'$'}LastExitCode
+                """.trimIndent()
+            }
+        }
+
+        script {
+            name = "Call Cake"
+            scriptContent = """
+                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=none --shouldRunSonarQube=true --shouldRunDependencyCheck=true --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
+            """.trimIndent()
+        }
+    }
+
+    triggers {
+        schedule {
+            schedulingPolicy = weekly {
+                dayOfWeek = ScheduleTrigger.DAY.Saturday
+                hour = 2
+                minute = 45
+            }
+            branchFilter = """
+                +:<default>
+            """.trimIndent()
+            triggerBuild = always()
+            withPendingChangesOnly = false
         }
     }
 })
