@@ -56,7 +56,7 @@ object RhinoLicensing : BuildType({
         script {
             name = "Call Cake"
             scriptContent = """
-                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=unit --shouldRunOpenCover=false
+                build.bat --verbosity=diagnostic --target=CI --testExecutionType=unit --shouldRunOpenCover=false
             """.trimIndent()
         }
     }
@@ -120,7 +120,7 @@ object RhinoLicensingSchd : BuildType({
         script {
             name = "Call Cake"
             scriptContent = """
-                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=all --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
+                build.bat --verbosity=diagnostic --target=CI --testExecutionType=all --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
             """.trimIndent()
         }
     }
@@ -179,7 +179,7 @@ object RhinoLicensingQA : BuildType({
         script {
             name = "Call Cake"
             scriptContent = """
-                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=none --shouldRunSonarQube=true --shouldRunDependencyCheck=true --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
+                build.bat --verbosity=diagnostic --target=CI --testExecutionType=none --shouldRunSonarQube=true --shouldRunDependencyCheck=true --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
             """.trimIndent()
         }
     }
