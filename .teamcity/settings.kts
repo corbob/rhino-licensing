@@ -56,7 +56,7 @@ object RhinoLicensing : BuildType({
         script {
             name = "Call Cake"
             scriptContent = """
-                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=unit --shouldRunOpenCover=false
+                build.bat --verbosity=diagnostic --target=CI --testExecutionType=unit --shouldRunOpenCover=false
             """.trimIndent()
         }
     }
@@ -108,11 +108,15 @@ object RhinoLicensingSchd : BuildType({
 
     steps {
         powerShell {
-            name = "Prerequisites"
+            name = "Install dependencies"
             scriptMode = script {
                 content = """
-                    choco install windows-sdk-7.1 netfx-4.8-devpack visualstudio2022-workload-manageddesktopbuildtools --confirm --no-progress
-                    exit ${'$'}LastExitCode
+                    choco install netfx-4.8-devpack dotnetcore-sdk --confirm --no-progress
+
+                    ${'$'}result = ${'$'}LASTEXITCODE
+                    if (${'$'}result -notin 0, 1641, 3010) {
+                    	throw "One or more dependencies failed to install. Last exit code: ${'$'}result"
+                    }
                 """.trimIndent()
             }
         }
@@ -120,7 +124,7 @@ object RhinoLicensingSchd : BuildType({
         script {
             name = "Call Cake"
             scriptContent = """
-                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=all --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
+                build.bat --verbosity=diagnostic --target=CI --testExecutionType=all --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
             """.trimIndent()
         }
     }
@@ -167,11 +171,15 @@ object RhinoLicensingQA : BuildType({
 
     steps {
         powerShell {
-            name = "Prerequisites"
+            name = "Install dependencies"
             scriptMode = script {
                 content = """
-                    choco install windows-sdk-7.1 netfx-4.8-devpack visualstudio2022-workload-manageddesktopbuildtools --confirm --no-progress
-                    exit ${'$'}LastExitCode
+                    choco install netfx-4.8-devpack dotnetcore-sdk --confirm --no-progress
+
+                    ${'$'}result = ${'$'}LASTEXITCODE
+                    if (${'$'}result -notin 0, 1641, 3010) {
+                    	throw "One or more dependencies failed to install. Last exit code: ${'$'}result"
+                    }
                 """.trimIndent()
             }
         }
@@ -179,7 +187,7 @@ object RhinoLicensingQA : BuildType({
         script {
             name = "Call Cake"
             scriptContent = """
-                build.official.bat --verbosity=diagnostic --target=CI --testExecutionType=none --shouldRunSonarQube=true --shouldRunDependencyCheck=true --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
+                build.bat --verbosity=diagnostic --target=CI --testExecutionType=none --shouldRunSonarQube=true --shouldRunDependencyCheck=true --shouldRunOpenCover=false --shouldRunAnalyze=false --shouldRunIlMerge=false --shouldObfuscateOutputAssemblies=false --shouldRunChocolatey=false --shouldRunNuGet=false --shouldAuthenticodeSignOutputAssemblies=false --shouldAuthenticodeSignPowerShellScripts=false
             """.trimIndent()
         }
     }
